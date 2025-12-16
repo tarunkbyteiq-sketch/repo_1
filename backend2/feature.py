@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from routes import router
 
-app = FastAPI(title="Two-Fil FastAPI App")
+app = FastAPI()
 
-# include routes from routes.py
-app.include_router(router)
+@app.get("/health")
+def health():
+    return {"status": "ok"}
