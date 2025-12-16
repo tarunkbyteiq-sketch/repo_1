@@ -1,0 +1,44 @@
+name: FastAPI Multi-App CI
+
+on:
+  pull_request:
+    # Optionally, specify target branches
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build app1
+        run: docker build -t app1-fastapi ./backend1
+
+      - name: Run container
+        run: |
+          docker run -d -p 8001:8000 --name app1 app1-fastapi
+          sleep 5
+          docker ps -a
+          docker logs app1
+
+      - name: Health check app 1
+        run: |
+          curl -f http://localhost:8001 || exit 1
+
+      - name: Build app2
+        run: docker build -t app2-fastapi ./backend2
+
+      - name: Run container
+        run: |
+          docker run -d -p 8002:8000 --name app2 app2-fastapi
+          sleep 5
+          docker ps -a
+          docker logs app2
+
+      - name: Health check app 2
+        run: |
+          curl -f http://localhost:8002 || exit 1
