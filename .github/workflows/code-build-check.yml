@@ -32,7 +32,7 @@ jobs:
 
       - name: Run container
         run: |
-          docker run -d -p 8002:8000 app1-fastapi
+          docker run -d -p 8002:8000 app2-fastapi
           sleep 5
 
       - name: Health check app 2
