@@ -1,10 +1,7 @@
-# Import the resource/controllers we're testing
-from resources.book import *
+from fastapi import FastAPI
+from routes import router
 
-def test_get_book(client):
-    response = client.get("/rabbits/1")
-    assert response.status_code == 200
-    assert response.json == {
-        "id": 1, 
-        "title": "Python for Dummies"
-    }
+app = FastAPI(title="Two-File FastAPI App")
+
+# include routes from routes.py
+app.include_router(router)
